@@ -60,7 +60,7 @@ Each DSH preset structures its prompt sections differently:
 ### Minimal Mode
 - Preserves custom persona text and `structured_output` instructions within the active agent scope while inserting the rule block; restores the original prompt when turned off.
 
-### Custom Presets (e.g. the reverse-engineering preset `ida`)
+### Custom Presets (e.g. the Reverse Engineering preset `reverse`)
 - Presets are recognised by id: any preset your profile's `cordis.patch.yml` declares is fused once its id is listed in `PRESETS`. Fusion goes by section name, so a custom persona prefix needs no extra anchor.
 
 ### Subagents & Structured Output

@@ -15,7 +15,7 @@ export const ANCHORS = {
 }
 
 /** Preset ids this plugin fuses; anything else passes through untouched. */
-export const PRESETS = ['standard', 'ptc', 'cordis', 'minimal', 'ida']
+export const PRESETS = ['standard', 'ptc', 'cordis', 'minimal', 'reverse']
 
 /** Per-preset fusion shape: which optional mode-specific boundary notes apply. */
 export const PRESET_RULES = {
@@ -23,9 +23,9 @@ export const PRESET_RULES = {
   ptc: { plan: true, ptcOnly: true },
   cordis: { plan: true, ptcOnly: false },
   minimal: { plan: false, ptcOnly: false },
-  // 本机自定义的逆向预设（cordis.patch.yml 里的 `ida`）：标准能力 + 逆向工具链。
+  // 本机自定义的逆向预设（cordis.patch.yml 里的 `reverse`）：标准能力 + 逆向工具链。
   // 结构化融合不看角色正文，自定义角色前缀因此不需要额外锚点。
-  ida: { plan: true, ptcOnly: false },
+  reverse: { plan: true, ptcOnly: false },
 }
 
 /** Section the fusion adds; sits directly behind the persona, ahead of plan and tool guidance. */

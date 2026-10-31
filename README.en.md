@@ -78,7 +78,7 @@ The plugin handles each DSH execution preset according to its prompt structure:
 - **PTC Mode**: Models in PTC mode run scripts via `run_code`. The plugin adds a note to `tools:ptc-only` so Python/Node code and SDK calls inside `run_code` follow the same output rules.
 - **Plan Mode**: Separates execution permissions from plan content—no file edits happen before approval, while the plan markdown itself includes full technical steps and code.
 - **Minimal Mode**: Injects rules within the active agent scope while preserving custom subagent personas and `structured_output` instructions.
-- **Reverse-engineering Mode (custom `ida` preset)**: A preset your own profile's `cordis.patch.yml` declares is fused too; fusion goes by section name, so a custom persona prefix needs no extra anchor.
+- **Reverse Engineering Mode (custom `reverse` preset)**: A preset your own profile's `cordis.patch.yml` declares is fused too; fusion goes by section name, so a custom persona prefix needs no extra anchor.
 - **Subagents**: Background subagents and structured output tasks inherit the current toggle state.
 
 ### Structural Fusion & Fallback
@@ -139,7 +139,7 @@ Make sure both switches are turned on after installation:
 
 The settings card also provides:
 
-- **Mode Coverage & Prompt Preview**: Shows active status for Standard, PTC, Cordis, Minimal, and the reverse-engineering mode (`ida`), with expandable full-prompt preview and one-click copy.
+- **Mode Coverage & Prompt Preview**: Shows active status for Standard, PTC, Cordis, Minimal, and the Reverse Engineering mode (`reverse`), with expandable full-prompt preview and one-click copy.
 - **Version & Updates**: Automatically checks GitHub Releases for new versions, displays an update badge in the plugin detail header, and supports one-click self-update.
 
 ---

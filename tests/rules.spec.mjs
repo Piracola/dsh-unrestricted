@@ -355,40 +355,40 @@ test('contractAdditions describes exactly what each preset receives', () => {  c
   assert.equal(contractAdditions('not-a-preset'), undefined)
 })
 
-test('ida (逆向模式) fuses whatever persona the custom preset carries', async () => {
+test('reverse (逆向模式) fuses whatever persona the custom preset carries', async () => {
   const sections = await sectionsOf('standard')
-  const idaPersona = 'You are a reverse-engineering agent powered by the {{model}} model.'
-  const idaSections = sections.map(section =>
-    section.name === 'deployment:persona-prefix' ? { ...section, text: idaPersona } : section)
+  const reversePersona = 'You are a reverse-engineering agent powered by the {{model}} model.'
+  const reverseSections = sections.map(section =>
+    section.name === 'deployment:persona-prefix' ? { ...section, text: reversePersona } : section)
 
-  const result = fuseSections(idaSections, 'ida')
+  const result = fuseSections(reverseSections, 'reverse')
   assert.equal(result.issues, undefined, `unexpected issues: ${result.issues}`)
 
   const fused = result.sections
   const fusedNames = fused.map(section => section.name)
   assert.equal(fusedNames.indexOf(BLOCK_SECTION), fusedNames.indexOf('deployment:persona-prefix') + 1)
   const persona = fused.find(section => section.name === 'deployment:persona-prefix')
-  assert.equal(persona.text, idaPersona + contractAdditions('ida').pointer)
+  assert.equal(persona.text, reversePersona + contractAdditions('reverse').pointer)
   assert.equal(fused.find(section => section.name === BLOCK_SECTION).text, EXECUTION_MODE_BLOCK)
 
-  // ida carries the same plan-mode and structured-output boundaries as standard.
-  assert.equal(contractAdditions('ida').planNote, contractAdditions('standard').planNote)
-  assert.equal(contractAdditions('ida').ptcNote, '')
-  assert.ok(contractAdditions('ida').structuredNote.includes('delivery contract above shapes what the report says'))
+  // reverse carries the same plan-mode and structured-output boundaries as standard.
+  assert.equal(contractAdditions('reverse').planNote, contractAdditions('standard').planNote)
+  assert.equal(contractAdditions('reverse').ptcNote, '')
+  assert.ok(contractAdditions('reverse').structuredNote.includes('delivery contract above shapes what the report says'))
 
   // Presets outside the list still pass through untouched.
-  assert.deepEqual(fuseSections(idaSections, 'my-custom-preset').issues, ['unsupported-preset'])
+  assert.deepEqual(fuseSections(reverseSections, 'my-custom-preset').issues, ['unsupported-preset'])
 })
 
 test('fixture coverage: every captured native preset was dumped', async () => {
-  // ida 是本机自定义预设（cordis.patch.yml 里的 preset-ida），没有官方 fixture；
+  // reverse 是本机自定义预设（cordis.patch.yml 里的 preset-reverse），没有官方 fixture；
   // 它的融合由上面那条用例覆盖。
   for (const preset of ['standard', 'ptc', 'cordis', 'minimal']) {
     assert.ok(PRESETS.includes(preset), `preset dropped from PRESETS: ${preset}`)
     const sections = await sectionsOf(preset)
     assert.ok(sections.length > 0, `missing fixture for ${preset}`)
   }
-  assert.ok(PRESETS.includes('ida'), 'ida must stay a fusable preset')
+  assert.ok(PRESETS.includes('reverse'), 'reverse must stay a fusable preset')
 })
 
 test('software cracking & reverse engineering capabilities are fully articulated', () => {

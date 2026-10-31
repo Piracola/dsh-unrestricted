@@ -5,7 +5,7 @@
     "dsh": ">=0.2.0-rc.2 <0.2.3-0"
   },
   "private": true,
-  "description": "Toggleable unrestricted mode for DeepSeek Harness: fuses execution rules into the active preset (standard, ptc, cordis, minimal, or a custom preset such as ida) and subagent prompts",
+  "description": "Toggleable unrestricted mode for DeepSeek Harness: fuses execution rules into the active preset (standard, ptc, cordis, minimal, or a custom preset such as reverse) and subagent prompts",
   "license": "MIT",
   "repository": {
     "type": "git",

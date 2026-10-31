@@ -48,7 +48,7 @@ const MODE_ROWS: ReadonlyArray<{
   { id: 'ptc', labelKey: 'modePtc', descKey: 'modePtcDesc', presetKey: 'presetPtc' },
   { id: 'cordis', labelKey: 'modeCordis', descKey: 'modeCordisDesc', presetKey: 'presetCordis' },
   { id: 'minimal', labelKey: 'modeMinimal', descKey: 'modeMinimalDesc', presetKey: 'presetMinimal' },
-  { id: 'ida', labelKey: 'modeIda', descKey: 'modeIdaDesc', presetKey: 'presetIda' },
+  { id: 'reverse', labelKey: 'modeReverse', descKey: 'modeReverseDesc', presetKey: 'presetReverse' },
 ]
 
 /** Known host issue strings/codes mapped to localized dictionary keys. */
