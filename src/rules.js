@@ -16,6 +16,9 @@ export const ANCHORS = {
   identity: 'You are an AI agent powered by DeepSeek Harness.',
   personaStandard: 'You are a coding agent powered by the {{model}} model.',
   personaMinimal: 'You are a helpful software engineer assistant.',
+  // 本机自定义的逆向预设（preset id `ida`）自带角色前缀；用户可改写后半句，
+  // 因此只在开头处做前缀匹配，其余预设仍要求逐字一致。
+  personaIda: 'You are a reverse-engineering agent powered by',
   // 只识别原生计划模式段；审批条件和完整正文保持官方内容，兼容本机 Desktop 的旧文案。
   planPrefix: 'You are in plan mode. Stay in plan mode until ',
   ptcOnly: '`run_code` is the only tool you can call directly — a tool call naming any other tool fails. Reach every tool the SDK declares below from inside the program.',
@@ -24,7 +27,7 @@ export const ANCHORS = {
 }
 
 /** Preset ids this plugin knows how to fuse; anything else passes through untouched. */
-export const PRESETS = ['standard', 'ptc', 'cordis', 'minimal']
+export const PRESETS = ['standard', 'ptc', 'cordis', 'minimal', 'ida']
 
 /** Per-preset fusion shape: which persona anchors and which in-place notes apply. */
 export const PRESET_RULES = {
@@ -33,6 +36,9 @@ export const PRESET_RULES = {
   cordis: { persona: 'personaStandard', plan: true, ptcOnly: false, identity: true },
   // minimal's complete persona replaces the whole prompt, so no identity line exists.
   minimal: { persona: 'personaMinimal', plan: false, ptcOnly: false, identity: false },
+  // 逆向模式（本机 cordis.patch.yml 里的 `ida` 预设）：标准能力 + 逆向工具链，
+  // 角色前缀可被用户改写，故按前缀匹配；其余段落与 standard 一致。
+  ida: { persona: 'personaIda', personaPrefix: true, plan: true, ptcOnly: false, identity: true },
 }
 
 /** Section the fusion adds; sits directly behind the persona, ahead of plan and tool guidance. */
@@ -194,8 +200,11 @@ export function fuseSections(sections, presetId, { isSubagent = false } = {}) {
 
   const persona = byName.get('deployment:persona-prefix')
   const personaAnchor = ANCHORS[rules.persona]
+  const personaMatches = persona !== undefined && (rules.personaPrefix === true
+    ? persona.text.startsWith(personaAnchor)
+    : persona.text === personaAnchor)
   let fusedPersona = undefined
-  if (persona !== undefined && persona.text === personaAnchor) {
+  if (personaMatches) {
     fusedPersona = { ...persona, text: persona.text + PERSONA_POINTER }
   } else if (isSubagent && persona !== undefined && persona.text.trim() !== '') {
     fusedPersona = { ...persona, text: persona.text + PERSONA_POINTER }

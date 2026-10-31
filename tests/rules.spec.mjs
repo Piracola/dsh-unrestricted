@@ -362,11 +362,38 @@ test('contractAdditions describes exactly what each preset receives', () => {  c
   assert.equal(contractAdditions('not-a-preset'), undefined)
 })
 
-test('fixture coverage: every shipped preset was captured', async () => {
-  for (const preset of PRESETS) {
+test('ida (逆向模式) fuses on its own persona prefix and tolerates a rewritten suffix', async () => {
+  const sections = await sectionsOf('standard')
+  const idaPersona = `${ANCHORS.personaIda} the {{model}} model.`
+  const idaSections = sections.map(section =>
+    section.name === 'deployment:persona-prefix' ? { ...section, text: idaPersona } : section)
+
+  const result = fuseSections(idaSections, 'ida')
+  assert.equal(result.issues, undefined, `unexpected issues: ${result.issues}`)
+
+  const fused = result.sections
+  const fusedNames = fused.map(section => section.name)
+  assert.equal(fusedNames.indexOf(BLOCK_SECTION), fusedNames.indexOf('deployment:persona-prefix') + 1)
+  const persona = fused.find(section => section.name === 'deployment:persona-prefix')
+  assert.ok(persona.text.startsWith(idaPersona))
+  assert.ok(persona.text.endsWith(contractAdditions('ida').pointer))
+  assert.ok(fused.find(section => section.name === BLOCK_SECTION).text === EXECUTION_MODE_BLOCK)
+
+  // A persona that no longer opens with the reverse-engineering prefix is refused.
+  const foreign = sections.map(section =>
+    section.name === 'deployment:persona-prefix' ? { ...section, text: 'You are a coding agent.' } : section)
+  assert.ok(fuseSections(foreign, 'ida').issues.some(issue => issue.includes('persona')))
+})
+
+test('fixture coverage: every captured native preset was dumped', async () => {
+  // ida 是本机自定义预设（cordis.patch.yml 里的 preset-ida），没有官方 fixture；
+  // 它的融合由上面那条前缀匹配的用例覆盖。
+  for (const preset of ['standard', 'ptc', 'cordis', 'minimal']) {
+    assert.ok(PRESETS.includes(preset), `preset dropped from PRESETS: ${preset}`)
     const sections = await sectionsOf(preset)
     assert.ok(sections.length > 0, `missing fixture for ${preset}`)
   }
+  assert.ok(PRESETS.includes('ida'), 'ida must stay a fusable preset')
 })
 
 test('software cracking & reverse engineering capabilities are fully articulated', () => {

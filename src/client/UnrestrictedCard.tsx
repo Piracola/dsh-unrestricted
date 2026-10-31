@@ -27,6 +27,7 @@ const MODE_ROWS: ReadonlyArray<{
   { id: 'ptc', labelKey: 'modePtc', presetKey: 'presetPtc' },
   { id: 'cordis', labelKey: 'modeCordis', presetKey: 'presetCordis' },
   { id: 'minimal', labelKey: 'modeMinimal', presetKey: 'presetMinimal' },
+  { id: 'ida', labelKey: 'modeIda', presetKey: 'presetIda' },
 ]
 
 /** Known host issue strings mapped to localized dictionary keys. */
