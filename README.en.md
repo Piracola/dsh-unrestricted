@@ -78,7 +78,7 @@ The plugin handles each DSH execution preset according to its prompt structure:
 - **PTC Mode**: Models in PTC mode run scripts via `run_code`. The plugin adds a note to `tools:ptc-only` so Python/Node code and SDK calls inside `run_code` follow the same output rules.
 - **Plan Mode**: Separates execution permissions from plan content—no file edits happen before approval, while the plan markdown itself includes full technical steps and code.
 - **Minimal Mode**: Injects rules within the active agent scope while preserving custom subagent personas and `structured_output` instructions.
-- **Reverse-engineering Mode (custom `ida` preset)**: A preset you declare yourself in `cordis.patch.yml` is fused too; fusion goes by section name, so a custom persona prefix needs no extra anchor.
+- **Reverse-engineering Mode (custom `ida` preset)**: A preset your own profile's `cordis.patch.yml` declares is fused too; fusion goes by section name, so a custom persona prefix needs no extra anchor.
 - **Subagents**: Background subagents and structured output tasks inherit the current toggle state.
 
 ### Structural Fusion & Fallback
@@ -166,7 +166,7 @@ pnpm test
 Helper scripts:
 
 - `node tools/dump-prompts.mjs --repo <path> --out tests/fixtures`: Exports stock prompts from a DSH source checkout to update test fixtures.
-- `node tools/verify-live.mjs --repo <path>`: Verifies assembly and rollback across all four modes locally without calling model APIs.
+- `node tools/verify-live.mjs --repo <path>`: Verifies assembly and rollback across the four built-in modes locally without calling model APIs.
 
 ---
 
